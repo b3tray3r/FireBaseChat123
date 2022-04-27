@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "680074685969",
+    "firebase_url": "https://chat-app-eb98b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "chat-app-eb98b",
+    "storage_bucket": "chat-app-eb98b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680074685969:android:a7f2e0e026f6d025c54bb0",
+        "android_client_info": {
+          "package_name": "com.example.firebasechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680074685969-i9sa01b9kp3veieeopf51r8s4ndfiigc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebasechat",
+            "certificate_hash": "460cb2a78d8cd68f68e3e6bdecefa113a8364256"
+          }
+        },
+        {
+          "client_id": "680074685969-14hj3acbgqa98l34ahqhpdkffacbo9ii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBooRXXHatTVKGDDzyBECnZlsyfh9E2WoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680074685969-14hj3acbgqa98l34ahqhpdkffacbo9ii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
