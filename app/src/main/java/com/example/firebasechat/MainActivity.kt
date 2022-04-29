@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             myRef.child(myRef.push().key ?: "Error").setValue(User(auth.currentUser?.displayName, binding.inputField.text.toString()))
             updateListener(myRef)
             initRcView()
-
+            binding.inputField.text.clear()
         }
 
 
