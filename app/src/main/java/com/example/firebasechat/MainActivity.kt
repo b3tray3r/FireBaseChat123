@@ -17,7 +17,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.user_list_item.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -28,18 +31,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
-        setUpProfilePic()
+//        setUpProfilePic()
         setContentView(binding.root)
         val database = Firebase.database
         val myRef = database.getReference("message")
-//        updateListener(myRef)
-//        update screen to show previous messages (Doesn't work)
+        updateListener(myRef)
+        initRcView()
 
-        binding.buttonId.setOnClickListener {
-            myRef.child(myRef.push().key ?: "Error").setValue(User(auth.currentUser?.displayName, binding.inputField.text.toString()))
-            updateListener(myRef)
-            initRcView()
-            binding.inputField.text.clear()
+        binding.buttonId.setOnClickListener{
+            val message = binding.inputField.text.toString()
+            if (message.isNotEmpty()) {
+                myRef.child(myRef.push().key ?: "Error").setValue(
+                    User(
+                        auth.currentUser?.displayName,
+                        binding.inputField.text.toString(),
+
+
+                    )
+                )
+                updateListener(myRef)
+                initRcView()
+                binding.inputField.text.clear()
+            }
         }
 
 
@@ -49,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         adapter = MessageAdapter()
         messageField.layoutManager = LinearLayoutManager(this@MainActivity)
         messageField.adapter = adapter
+
 //        messageField.scrollToPosition(adapter.itemCount-1)
 //        Show last message in chat (Doesn't work)
     }
@@ -69,11 +83,12 @@ class MainActivity : AppCompatActivity() {
     private fun updateListener(dRef: DatabaseReference){
         dRef.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = ArrayList<User>()
+                val list = mutableListOf<User>()
                for (s in snapshot.children) {
                    val user = s.getValue(User::class.java)
-                   if (user != null)
-                   list.add(user)
+                   if (user != null) {
+                       list.add(user)
+                   }
                }
                 adapter.submitList(list)
             }
@@ -82,18 +97,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-    private fun setUpProfilePic() {
-        val pic = supportActionBar
-        Thread{
-            val bMap = Picasso.get().load(auth.currentUser?.photoUrl).get()
-            val icon = BitmapDrawable(resources, bMap)
-            runOnUiThread {
-                pic?.setDisplayHomeAsUpEnabled(true)
-                pic?.setHomeAsUpIndicator(icon)
-                pic?.title = auth.currentUser?.displayName
-            }
-        }.start()
-
-    }
+//      Set Profile pic icon
+//
+//    private fun setUpProfilePic() {
+//        val pic = supportActionBar
+//        Thread{
+//            val bMap = Picasso.get().load(auth.currentUser?.photoUrl).get()
+//            val icon = BitmapDrawable(resources, bMap)
+//            runOnUiThread {
+//                pic?.setDisplayHomeAsUpEnabled(true)
+//                pic?.setHomeAsUpIndicator(icon)
+//                pic?.title = auth.currentUser?.displayName
+//            }
+//        }.start()
+//    }
 
 }

@@ -70,11 +70,10 @@ class SigninActivity : AppCompatActivity() {
             }
         }
     }
-
+// TODO Refactor
     private fun checkAuthState() {
         if(auth.currentUser != null) {
-            val i = Intent(this, MainActivity::class.java)
-            startActivity(i)
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }
