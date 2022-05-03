@@ -15,8 +15,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -86,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                    }
                }
                 adapter.setMessagesList(list)
+                messageField.smoothScrollToPosition(adapter.itemCount - 1)
 
             }
 
