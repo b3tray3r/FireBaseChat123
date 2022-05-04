@@ -1,11 +1,10 @@
 package com.example.firebasechat
 
-import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebasechat.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -16,16 +15,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.user_list_item.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var auth: FirebaseAuth
-    lateinit var adapter: MessageAdapter
+    lateinit var adapter: NewMessageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
                 updateListener(myRef)
-                initRcView()
                 binding.inputField.text.clear()
             }
         }
@@ -59,12 +54,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRcView() = with(binding){
-        adapter = MessageAdapter()
+        adapter = NewMessageAdapter()
         messageField.layoutManager = LinearLayoutManager(this@MainActivity)
         messageField.adapter = adapter
 
-//        messageField.scrollToPosition(adapter.itemCount-1)
-//        Show last message in chat (Doesn't work)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,18 +75,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateListener(dRef: DatabaseReference){
         dRef.addValueEventListener(object: ValueEventListener{
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<User>()
-               for (s in snapshot.children) {
+                for (s in snapshot.children) {
                    val user = s.getValue(User::class.java)
                    if (user != null) {
                        list.add(user)
                    }
                }
-                adapter.submitList(list)
+                adapter.setMessagesList(list)
+
             }
 
             override fun onCancelled(error: DatabaseError) {
+                Log.w("MainActivity", "Failed to read value.", error.toException())
             }
         })
     }
